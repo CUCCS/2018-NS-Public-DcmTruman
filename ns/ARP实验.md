@@ -8,7 +8,7 @@
 
 
 ### 2. 查看终端ARP表
-- 三台之前先互相发送ICMP包，使得arp表中有缓存</br>![](ping_1.jpg)</br>![](ping_2.jpg)</br>![](ping_3.jpg)
+- 三台主机先互相发送ICMP包，使得arp表中有缓存</br>![](ping_1.jpg)</br>![](ping_2.jpg)</br>![](ping_3.jpg)
 - 通过`arp -an`指令查看三台主机的arp缓存表</br>![](arp_1.jpg)</br>![](arp_2.jpg)![](arp_3.jpg)
 ### 3. 查看受害者两台主机是否处于混杂模式状态
 
@@ -50,7 +50,7 @@
     > In non-promiscuous mode, when a NIC receives a frame, it drops it unless the frame is addressed to that NIC's MAC address or is a broadcast or multicast addressed frame. In promiscuous mode, however, the NIC allows all frames through, thus allowing the computer to read frames intended for other machines or network devices.
 
 
-5. 结合自己是的实验环境是内部网络，大胆分析一下。首先，开启混杂模式的时候，主机是不会丢弃所有自己收到的包。在以太网中，如果交换机不知道当前这个mac地址的转发端口，则会转发给所有端口，然后进行后向学习，那么这时候开启混杂模式的主机肯定是可以收到，如果交换机知道mac地址对应的端口，则直接转发，混杂模式的主机收不到。在virtualbox的内部网络中，如果发送到一个不存在的单播地址，所有主机都收不到这个包。如果发送一个多播地址的包，则可以让混杂模式的主机成功收到这个包，非混杂模式的主机，看到后选择丢弃。根据MAC地址的规定，第48位为1时，是多播地址。在本次实验中，也只有构造的mac地址是多播地址时，才可以成功让混杂模式主机收到，并返回信息
+5. 结合自己的实验环境是内部网络，大胆分析一下。首先，开启混杂模式的时候，主机是不会丢弃所有自己收到的包。在以太网中，如果交换机不知道当前这个mac地址的转发端口，则会转发给所有端口，然后进行后向学习，那么这时候开启混杂模式的主机肯定是可以收到，如果交换机知道mac地址对应的端口，则直接转发，混杂模式的主机收不到。在virtualbox的内部网络中，如果发送到一个不存在的单播地址，所有主机都收不到这个包。如果发送一个多播地址的包，则可以让混杂模式的主机成功收到这个包，非混杂模式的主机，看到后选择丢弃。根据MAC地址的规定，第48位为1时，是多播地址。在本次实验中，也只有构造的mac地址是多播地址时，才可以成功让混杂模式主机收到，并返回信息
 
 ## 二、ARP欺骗实验
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 
 - 实验环境同arpspoof实验环境
 
-- 使用Ettercap工具进行口令嗅探,篡改受害者arp表中网关的mac地址,并开启流量转发,同时会显示疑似用户名、密码的数据等
+- 使用Ettercap工具进行口令嗅探,篡改受害者arp表中网关的mac地址,并开启流量转发(软件本身具备流量转发功能,不必在单独开启,否则会转发两遍),同时会显示疑似用户名、密码的数据等
 
 
 - 受害者初始arp表</br>![](arp_init_table.jpg)
